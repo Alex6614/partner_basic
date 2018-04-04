@@ -33,6 +33,20 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# My Gems
+# - Better Errors
+gem 'better_errors'
+gem 'binding_of_caller'
+# - RSpec
+gem 'rspec-rails'
+# - Haml
+gem 'haml'
+# - BCrypt
+gem 'rake-compiler', '~> 0.9.2'
+gem 'rdoc', '~> 3.12'
+gem 'bcrypt'
+
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
