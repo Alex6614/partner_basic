@@ -4,7 +4,7 @@ RSpec.describe "reviews/show", type: :view do
   before(:each) do
     @review = assign(:review, Review.create!(
       :club => nil,
-      :company => nil,
+      :user => nil,
       :review_text => "MyText"
     ))
   end

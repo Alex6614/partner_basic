@@ -1,4 +1,4 @@
 class GroupToStudent < ApplicationRecord
   belongs_to :group
-  belongs_to :student
+  belongs_to :user
 end

@@ -1,4 +1,4 @@
 class StudentToClub < ApplicationRecord
-  belongs_to :student
   belongs_to :club
+  belongs_to :user
 end

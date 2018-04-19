@@ -4,13 +4,13 @@ RSpec.describe "projects/index", type: :view do
   before(:each) do
     assign(:projects, [
       Project.create!(
-        :company => nil,
+        :user => nil,
         :project_name => "Project Name",
         :description => "MyText",
         :group => nil
       ),
       Project.create!(
-        :company => nil,
+        :user => nil,
         :project_name => "Project Name",
         :description => "MyText",
         :group => nil

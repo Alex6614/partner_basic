@@ -5,7 +5,7 @@
 <table>
   <thead>
     <tr>
-      <th>Company</th>
+      <th>User</th>
       <th>Project name</th>
       <th>Description</th>
       <th>Group</th>
@@ -16,7 +16,7 @@
   <tbody>
     <% @projects.each do |project| %>
       <tr>
-        <td><%= project.company %></td>
+        <td><%= project.user %></td>
         <td><%= project.project_name %></td>
         <td><%= project.description %></td>
         <td><%= project.group %></td>

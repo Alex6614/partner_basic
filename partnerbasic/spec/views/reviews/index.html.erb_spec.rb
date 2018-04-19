@@ -5,12 +5,12 @@ RSpec.describe "reviews/index", type: :view do
     assign(:reviews, [
       Review.create!(
         :club => nil,
-        :company => nil,
+        :user => nil,
         :review_text => "MyText"
       ),
       Review.create!(
         :club => nil,
-        :company => nil,
+        :user => nil,
         :review_text => "MyText"
       )
     ])
