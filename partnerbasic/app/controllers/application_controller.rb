@@ -1,13 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  helper_method :logged_in?, :is_student?, :current_user
+  helper_method :logged_in?, :student?, :current_user
 
   def logged_in?
     session[:user_id]
   end
 
-  def is_student?
-    session[:user_typw]
+  def student?
+    session[:user_type]
   end
 
   def current_user

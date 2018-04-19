@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
       redirect_to login_path
     elsif @user.password_hash == params[:password]
       session[:user_id] = @user.id
+      session[:user_type] = @user.is_student
       redirect_to root_path
     else
       redirect_to login_path
