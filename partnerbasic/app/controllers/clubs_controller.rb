@@ -1,5 +1,6 @@
 class ClubsController < ApplicationController
   before_action :set_club, only: [:show, :edit, :update, :destroy]
+  helper_method :admin?
 
   # GET /clubs
   # GET /clubs.json
@@ -35,6 +36,7 @@ class ClubsController < ApplicationController
         format.json { render json: @club.errors, status: :unprocessable_entity }
       end
     end
+    @club.add_member(current_user, true)
   end
 
   # PATCH/PUT /clubs/1
@@ -62,6 +64,12 @@ class ClubsController < ApplicationController
   end
 
   private
+
+    def admin?
+      return false unless StudentToClub.exists?(user: current_user, club: @club)
+      student_to_club = StudentToClub.find_by(user: current_user, club: @club)
+      student_to_club.is_admin
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_club
       @club = Club.find(params[:id])

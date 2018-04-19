@@ -30,5 +30,11 @@
   <%= @club.verified %>
 </p>
 
+<% if admin? %>
+    I AM THE ADMIN
+<% else %>
+    I AM NOT THE ADMIN
+<% end %>
+
 <%= link_to 'Edit', edit_club_path(@club) %> |
 <%= link_to 'Back', clubs_path %>
