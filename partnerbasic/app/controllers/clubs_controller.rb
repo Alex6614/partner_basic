@@ -1,5 +1,5 @@
 class ClubsController < ApplicationController
-  before_action :set_club, only: [:show, :edit, :update, :destroy, :add_club_member]
+  before_action :set_club, only: [:show, :edit, :update, :destroy, :add_club_member, :remove_club_member]
   helper_method :admin?, :adminv2?, :member?
 
   # GET /clubs
@@ -66,6 +66,11 @@ class ClubsController < ApplicationController
 
   def add_club_member
     @club.add_member(current_user, false)
+    redirect_to @club
+  end
+
+  def remove_club_member
+    @club.remove_member(current_user)
     redirect_to @club
   end
 

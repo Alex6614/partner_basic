@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :clubs do
     member do
       post 'add_club_member'
+      post 'remove_club_member'
     end
   end
 

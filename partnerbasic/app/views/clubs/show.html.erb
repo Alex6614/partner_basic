@@ -42,10 +42,16 @@
     <br>
   </tr>
 <% end %>
+
 <br>
 <% if !member? && student? %>
 <%= link_to 'Join Club', add_club_member_club_path, method: :post %>
 <% end %>
+
+<% if member? && student? %>
+<%= link_to 'Leave Club', remove_club_member_club_path, method: :post %>
+<% end %>
+
 <br>
 <%= link_to 'Edit', edit_club_path(@club) %> |
 <%= link_to 'Back', clubs_path %>

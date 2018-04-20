@@ -9,4 +9,9 @@ class Club < ApplicationRecord
   def add_member(user_id, is_admin)
     StudentToClub.create(club: self, user: user_id, is_admin: is_admin)
   end
+
+  def remove_member(user_id)
+    relationship = StudentToClub.find_by(user: user_id, club: self)
+    relationship.destroy
+  end
 end
