@@ -1,5 +1,6 @@
 class Club < ApplicationRecord
   has_many :reviews
+  has_many :student_to_clubs
   has_many :users, through: :student_to_clubs
   has_many :groups
 

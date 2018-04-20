@@ -30,11 +30,17 @@
   <%= @club.verified %>
 </p>
 
-<% if admin? %>
-    I AM THE ADMIN
-<% else %>
-    I AM NOT THE ADMIN
+<% @club_members.each do |member| %>
+  <tr>
+    <td><%= member.name %></td>
+    <td><%= link_to 'Show', member %></td>
+    <% if adminv2?(member) %>
+      ADMIN
+    <% else %>
+      NOT ADMIN
+    <% end %>
+  </tr>
 <% end %>
-
+<br>
 <%= link_to 'Edit', edit_club_path(@club) %> |
 <%= link_to 'Back', clubs_path %>
