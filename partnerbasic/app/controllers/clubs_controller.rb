@@ -1,6 +1,6 @@
 class ClubsController < ApplicationController
-  before_action :set_club, only: [:show, :edit, :update, :destroy]
-  helper_method :admin?, :adminv2?
+  before_action :set_club, only: [:show, :edit, :update, :destroy, :add_club_member]
+  helper_method :admin?, :adminv2?, :member?
 
   # GET /clubs
   # GET /clubs.json
@@ -64,6 +64,11 @@ class ClubsController < ApplicationController
     end
   end
 
+  def add_club_member
+    @club.add_member(current_user, false)
+    redirect_to @club
+  end
+
   private
 
     def admin?
@@ -76,6 +81,10 @@ class ClubsController < ApplicationController
       return false unless StudentToClub.exists?(user: user, club: @club)
       student_to_club = StudentToClub.find_by(user: user, club: @club)
       student_to_club.is_admin
+    end
+
+    def member?
+      StudentToClub.exists?(user: current_user, club: @club)
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_club

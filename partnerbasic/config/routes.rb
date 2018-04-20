@@ -13,7 +13,11 @@ Rails.application.routes.draw do
 
   resources :applications
   resources :groups
-  resources :clubs
+  resources :clubs do
+    member do
+      post 'add_club_member'
+    end
+  end
 
   get '/login', to: 'sessions#new'
 
