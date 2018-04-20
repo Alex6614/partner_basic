@@ -1,5 +1,5 @@
 class ClubsController < ApplicationController
-  before_action :set_club, only: [:show, :edit, :update, :destroy, :add_club_member, :remove_club_member]
+  before_action :set_club, only: [:show, :edit, :update, :destroy, :add_club_member, :remove_club_member, :create_group]
   helper_method :admin?, :adminv2?, :member?
 
   # GET /clubs
@@ -12,6 +12,7 @@ class ClubsController < ApplicationController
   # GET /clubs/1.json
   def show
     @club_members = @club.users
+    @club_groups =@club.groups
   end
 
   # GET /clubs/new
@@ -71,6 +72,12 @@ class ClubsController < ApplicationController
 
   def remove_club_member
     @club.remove_member(current_user)
+    redirect_to @club
+  end
+
+  def create_group
+    @group = Group.new(club: @club, group_name: params['group_name'])
+    @group.save
     redirect_to @club
   end
 

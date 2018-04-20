@@ -1,5 +1,7 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_club
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :add_group_member, :remove_group_member]
+  helper_method :member?
 
   # GET /groups
   # GET /groups.json
@@ -10,6 +12,7 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
+    @group_members = @group.users
   end
 
   # GET /groups/new
@@ -61,7 +64,24 @@ class GroupsController < ApplicationController
     end
   end
 
+  def add_group_member
+    @group.add_member(current_user)
+    redirect_to club_group_path(@club, @group)
+  end
+
+  def remove_group_member
+    @group.remove_member(current_user)
+    redirect_to club_group_path(@club, @group)
+  end
+
   private
+
+    def member?
+      GroupToStudent.exists?(user: current_user, group: @group)
+    end
+    def set_club
+      @club = Club.find(params[:club_id])
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_group
       @group = Group.find(params[:id])

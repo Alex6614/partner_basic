@@ -13,5 +13,6 @@ class Club < ApplicationRecord
   def remove_member(user_id)
     relationship = StudentToClub.find_by(user: user_id, club: self)
     relationship.destroy
+    groups.each { |group| GroupToStudent.where(user: user_id, group: group).destroy_all }
   end
 end

@@ -12,11 +12,17 @@ Rails.application.routes.draw do
   resources :projects
 
   resources :applications
-  resources :groups
   resources :clubs do
+    resources :groups do
+      member do
+        post 'add_group_member'
+        post 'remove_group_member'
+      end
+    end
     member do
       post 'add_club_member'
       post 'remove_club_member'
+      post 'create_group'
     end
   end
 

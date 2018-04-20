@@ -1,14 +1,28 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Club:</strong>
-  <%= @group.club %>
-</p>
-
-<p>
   <strong>Group name:</strong>
   <%= @group.group_name %>
 </p>
 
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+
+<% @group_members.each do |member| %>
+  <tr>
+    <td><%= member.name %></td>
+    <td><%= link_to 'Show', member %></td>
+    <br>
+  </tr>
+<% end %>
+
+<br>
+<% if !member? && student? %>
+<%= link_to 'Join Group', add_group_member_club_group_path(group_id: @group), method: :post %>
+<% end %>
+
+<% if member? && student? %>
+<%= link_to 'Leave Group', remove_group_member_club_group_path(group_id: @group), method: :post %>
+<% end %>
+<br>
+
+<%= link_to 'Edit', edit_club_group_path(@club) %> |
+<%= link_to 'Back', @club %>

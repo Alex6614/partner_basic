@@ -51,7 +51,27 @@
 <% if member? && student? %>
 <%= link_to 'Leave Club', remove_club_member_club_path, method: :post %>
 <% end %>
+<br>
+
+<% @club_groups.each do |group| %>
+  <tr>
+    <td><%= group.group_name %></td>
+    <td><%= link_to 'Show', club_group_path(@club, group) %></td>
+    <br>
+  </tr>
+<% end %>
 
 <br>
+
+<%= form_with(url: create_group_club_path, local:true) do |form|%>
+  <div class="field">
+    <%= form.label :group_name%>
+    <%= form.text_field :group_name%>
+  </div>
+  <div class="actions">
+    <%= form.submit 'Create', disabled: false%>
+  </div>
+<%end%>
+
 <%= link_to 'Edit', edit_club_path(@club) %> |
 <%= link_to 'Back', clubs_path %>
