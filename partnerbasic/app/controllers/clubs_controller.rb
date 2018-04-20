@@ -12,7 +12,7 @@ class ClubsController < ApplicationController
   # GET /clubs/1.json
   def show
     @club_members = @club.users
-    @club_groups =@club.groups
+    @club_groups = @club.groups
   end
 
   # GET /clubs/new

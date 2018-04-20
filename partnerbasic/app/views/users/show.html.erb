@@ -32,3 +32,26 @@
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
+<br>
+
+<% if company? %>
+  <% @company_projects.each do |project| %>
+    <tr>
+      <td><%= project.project_name %></td>
+      <td><%= link_to 'Show', user_project_path(@user, project) %></td>
+      <br>
+    </tr>
+  <% end %>
+<% end %>
+
+<% if company? && owner? %>
+  <%= form_with(url: create_project_user_path, local:true) do |form|%>
+    <div class="field">
+      <%= form.label :project_name%>
+      <%= form.text_field :project_name%>
+    </div>
+    <div class="actions">
+      <%= form.submit 'Create', disabled: false%>
+    </div>
+  <%end%>
+<% end %>

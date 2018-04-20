@@ -1,17 +1,15 @@
-class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :create_project, :company?, :company_owner?]
-  helper_method :company?, :owner?
+class CompanyController < ApplicationController
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.all.where(is_student: false)
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-    @company_projects = @user.projects
   end
 
   # GET /users/new
@@ -63,23 +61,8 @@ class UsersController < ApplicationController
     end
   end
 
-  def create_project
-    @project = Project.new(user: @user, project_name: params['project_name'])
-    @project.save
-    redirect_to @user
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
-
-    def company?
-      !@user.is_student
-    end
-
-    def owner?
-      @user == current_user
-    end
-
     def set_user
       @user = User.find(params[:id])
     end

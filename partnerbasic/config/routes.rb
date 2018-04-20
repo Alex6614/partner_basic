@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   root 'welcome#index'
 
   get 'sessions/destroy'
@@ -7,9 +8,14 @@ Rails.application.routes.draw do
 
   get 'sessions/new'
 
-  resources :users
+  resources :users do
+    resources :projects
+    member do
+      post 'create_project'
+    end
+  end
   resources :reviews
-  resources :projects
+  resources :company
 
   resources :applications
   resources :clubs do
