@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @user_groups = current_user.groups
+    @user_groups = if current_user.nil? then [] else current_user.groups end
     @project_applications = @project.applications
   end
 
@@ -46,8 +46,8 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update(project_params)
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
-        format.json { render :show, status: :ok, location: @project }
+        format.html { redirect_to user_project_path(@user, @project), notice: 'Project was successfully updated.' }
+        format.json { render :show, status: :ok, location: user_project_path(@user, @project) }
       else
         format.html { render :edit }
         format.json { render json: @project.errors, status: :unprocessable_entity }

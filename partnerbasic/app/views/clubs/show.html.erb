@@ -1,44 +1,27 @@
 <p id="notice"><%= notice %></p>
+<div class="jumbotron">
+<div class="container">
+    <h1 class="display-3"><%= @club.club_name %></h1>
+    <% if !@club.university_name.empty? %>
+      <%= @club.university_name %>
+    <% end %>
+    <p><%= @club.description %></p>
+  <% if admin? %>
+    <%= link_to 'Edit', edit_club_path(@club), class: 'btn-info btn', :style => 'color: white' %>
+    <%= link_to 'Delete', @club, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-danger btn', :style => 'color: white' %>
+  <% end %>
+  </div>
+</div>
 
-<p>
-  <strong>Club name:</strong>
-  <%= @club.club_name %>
-</p>
-
-<p>
-  <strong>University name:</strong>
-  <%= @club.university_name %>
-</p>
-
-<p>
-  <strong>Club link:</strong>
-  <%= @club.club_link %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @club.description %>
-</p>
-
-<p>
-  <strong>Photo link:</strong>
-  <%= @club.photo_link %>
-</p>
-
-<p>
-  <strong>Verified:</strong>
-  <%= @club.verified %>
-</p>
-
+<% if !@club_members.empty? %>
+  <h2> Members </h2>
+<% end %>
 <% @club_members.each do |member| %>
   <tr>
-    <td><%= member.name %></td>
-    <td><%= link_to 'Show', member %></td>
     <% if adminv2?(member) %>
-      ADMIN
-    <% else %>
-      NOT ADMIN
+      &#9813;
     <% end %>
+    <td><%= link_to "#{member.name}".html_safe, member, class: 'btn-link btn'%></td>
     <br>
   </tr>
 <% end %>

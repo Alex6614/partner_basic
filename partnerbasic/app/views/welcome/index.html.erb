@@ -1,5 +1,9 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
-<%= link_to 'Clubs', clubs_path, class: 'nav-link' %>
-<%= link_to 'Companies', company_index_path, class: 'nav-link' %>
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-3">Partner Basic</h1>
+    <p>To start, sign up as a student or a company, then check out the student groups/companies listed below!</p>
+    <%= link_to 'Clubs', clubs_path, class: ' btn btn-primary btn-lg', :style => 'color: white' %>
+    <%= link_to 'Companies', company_index_path, class: 'btn btn-primary btn-lg', :style => 'color: white' %>
+  </div>
+</div>
 

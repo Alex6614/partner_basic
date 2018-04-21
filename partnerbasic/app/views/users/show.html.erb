@@ -1,59 +1,41 @@
 <p id="notice"><%= notice %></p>
+<div class="jumbotron">
+<div class="container">
+    <h1 class="display-3"><%= @user.name %></h1>
+    <p><%= @user.description %></p>
+  <% if owner? %>
+    <%= link_to 'Edit', edit_user_path(@user), class: 'btn-info btn', :style => 'color: white' %>
+    <%= link_to 'Delete', @user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-danger btn', :style => 'color: white' %>
+  <% end %>
+  </div>
+</div>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
-
-<p>
-  <strong>Password hash:</strong>
-  <%= @user.password_hash %>
-</p>
-
-<p>
-  <strong>Photo link:</strong>
-  <%= @user.photo_link %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @user.description %>
-</p>
-
-<p>
-  <strong>Is student:</strong>
-  <%= @user.is_student %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
 <br>
 
 <% if company? %>
-  <% @company_projects.each do |project| %>
-    <% if project.complete.nil? || !project.complete %>
-      <tr>
-        <td><%= project.project_name %></td>
-        <td><%= link_to 'Show', user_project_path(@user, project) %></td>
-        <br>
-      </tr>
-    <% end %>
-  <% end %>
+  <div class="container">
+      <% @company_projects.each do |project| %>
+      <div class="row" style="margin-top:20px;">
+        <% if project.complete.nil? || !project.complete %>
+            <div class="col-md-4">
+            <h2 style='vertical-align: middle; position: absolute'><%= project.project_name %></h2><br>
+            </div>
+            <%= link_to 'Show', user_project_path(@user, project), class: 'btn-success btn', :style => 'color: white' %>
+        <% end %>
+      </div>
+      <% end %>
+  </div>
 <% end %>
-
+<br>
 <% if company? && owner? %>
   <%= form_with(url: create_project_user_path, local:true) do |form|%>
-    <div class="field">
-      <%= form.label :project_name%>
-      <%= form.text_field :project_name%>
+    <div class="row">
+      <div class="field col-md-4">
+        <%= form.text_field :project_name, placeholder: 'New Project', :style => 'height: 100%'%>
+      </div>
+      <div class="actions">
+        <%= form.submit 'Create', disabled: false, class: 'btn-success btn', :style => 'color: white'%>
+      </div>
     </div>
-    <div class="actions">
-      <%= form.submit 'Create', disabled: false%>
-    </div>
-  <%end%>
+  <% end %>
 <% end %>

@@ -1,11 +1,6 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User:</strong>
-  <%= @project.user %>
-</p>
-
-<p>
   <strong>Project name:</strong>
   <%= @project.project_name %>
 </p>
@@ -18,66 +13,59 @@
 <p>
   <strong>Group:</strong>
   <% if !taken? %>
-    None
+    None, apply now!
   <% else %>
     <%= @project.group.full_name %>
   <% end %>
 </p>
 
-<%= link_to 'Edit', edit_user_project_path(@project) %> |
-<%= link_to 'Back', @user %>
-
 <br>
-
-<% if taken? %>
-    <p> THIS PROJECT IS TAKEN </p>
-<% else %>
-    <p> THIS PROJECT IS FREE </p>
-<% end %>
 
 <% if !taken? %>
     <% if student? && @user_groups.any? %>
       <%= form_with(url: create_application_user_project_path, local:true) do |form|%>
         <div class="field">
-          <%= form.label :application_text %>
-          <%= form.text_area :application_text, :cols => "80", :rows => "20" %>
+          <%= form.text_area :application_text, :cols => "80", :rows => "20", placeholder: 'Write your application here!' %>
         </div>
         <div class="field">
-          <%= form.label :selected_group %>
-          <%= form.collection_select(:selected_group, @user_groups, :id, :full_name, prompt: true) %>
+          <%= form.collection_select(:selected_group, @user_groups, :id, :full_name, prompt: 'Select your group') %>
         </div>
         <div class="actions">
-          <%= form.submit 'Create', disabled: false%>
+          <%= form.submit 'Apply', disabled: false, class: 'btn-success btn', :style => 'color: white'%>
         </div>
       <% end %>
     <% end %>
 
     <% if company? && owner? %>
         <% @project_applications.each do |application| %>
-          <tr>
-            <td><%= application.group.full_name %></td>
-            <td><%= link_to 'Show', club_group_path(application.group.club, application.group) %></td>
-            <br>
-            <td><%= application.created_at %></td>
-            <br>
-            <td><%= application.text %></td>
-            <br>
-            <td>
-                <%= link_to 'Accept', accept_application_user_project_application_path(@user, @project, application), method: :post %>
-            </td>
-          </tr>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= application.group.full_name %></h5>
+              <br>
+              <%= application.created_at %>
+              <br>
+              <p class="card-text"><%= application.text %></p>
+              <br>
+              <%= link_to 'Show', club_path(application.group.club), class: 'btn-info btn', :style => 'color: white' %>
+              <%= link_to 'Accept', accept_application_user_project_application_path(@user, @project, application), method: :post, class: 'btn-success btn', :style => 'color: white' %>
+            </div>
+          </div>
         <% end %>
     <% end %>
 <% else %>
     <% if company? && owner? && (@project.complete.nil? || !@project.complete) %>
       <%= form_with(url: complete_project_user_project_path, local:true) do |form|%>
         <div class="field">
-          <%= form.label :review_text %>
-          <%= form.text_area :review_text, :cols => "80", :rows => "20" %>
+          <%= form.text_area :review_text, :cols => "80", :rows => "20",  placeholder: 'Write your review here once the project is done!'%>
         </div>
         <div class="actions">
-          <%= form.submit 'Mark as Complete', disabled: false%>
+          <%= form.submit 'Mark as Complete', disabled: false, class: 'btn-success btn', :style => 'color: white'%>
         </div>
       <% end %>
     <% end %>
 <% end %>
+<br>
+<% if owner? %>
+  <%= link_to 'Edit', edit_user_project_path(@user, @project), class: 'btn-info btn', :style => 'color: white' %>
+<% end %>
+<%= link_to 'Back', @user, class: 'btn-warning btn', :style => 'color: white' %>
