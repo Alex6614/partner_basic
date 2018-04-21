@@ -20,5 +20,46 @@
   <%= @project.group %>
 </p>
 
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+<%= link_to 'Edit', edit_user_project_path(@project) %> |
+<%= link_to 'Back', @user %>
+
+<br>
+
+<% if taken? %>
+    <p> THIS PROJECT IS TAKEN </p>
+<% else %>
+    <p> THIS PROJECT IS FREE </p>
+<% end %>
+
+<% if student? && @user_groups.any? %>
+  <%= form_with(url: create_application_user_project_path, local:true) do |form|%>
+    <div class="field">
+      <%= form.label :application_text %>
+      <%= form.text_area :application_text, :cols => "80", :rows => "20" %>
+    </div>
+    <div class="field">
+      <%= form.label :selected_group %>
+      <%= form.collection_select(:selected_group, @user_groups, :id, :full_name, prompt: true) %>
+    </div>
+    <div class="actions">
+      <%= form.submit 'Create', disabled: false%>
+    </div>
+  <%end%>
+<% end %>
+
+<% if company? && owner? %>
+    <% @project_applications.each do |application| %>
+      <tr>
+        <td><%= application.group.full_name %></td>
+        <td><%= link_to 'Show', club_group_path(application.group.club, application.group) %></td>
+        <br>
+        <td><%= application.created_at %></td>
+        <br>
+        <td><%= application.text %></td>
+        <br>
+        <td>
+            <%= link_to 'Accept', accept_application_user_project_application_path(@user, @project, application), method: :post %>
+        </td>
+      </tr>
+    <% end %>
+<% end %>

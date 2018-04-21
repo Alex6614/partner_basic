@@ -9,7 +9,16 @@ Rails.application.routes.draw do
   get 'sessions/new'
 
   resources :users do
-    resources :projects
+    resources :projects do
+      resources :applications do
+        member do
+          post 'accept_application'
+        end
+      end
+      member do
+        post 'create_application'
+      end
+    end
     member do
       post 'create_project'
     end
@@ -17,7 +26,6 @@ Rails.application.routes.draw do
   resources :reviews
   resources :company
 
-  resources :applications
   resources :clubs do
     resources :groups do
       member do

@@ -1,5 +1,7 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_user
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :create_application]
+  helper_method :company?, :owner?, :taken?
 
   # GET /projects
   # GET /projects.json
@@ -10,6 +12,8 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    @user_groups = current_user.groups
+    @project_applications = @project.applications
   end
 
   # GET /projects/new
@@ -61,10 +65,31 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def create_application
+    @application = Application.new(text: params['application_text'], group: Group.find(params['selected_group']), project: @project)
+    @application.save
+    redirect_to user_project_path(@user, @project)
+  end
+
   private
+    def company?
+      !@user.is_student
+    end
+
+    def owner?
+      @user == current_user
+    end
+
+    def set_user
+      @user = User.find(params[:user_id])
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params[:id])
+    end
+
+    def taken?
+      !@project.group_id.nil?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

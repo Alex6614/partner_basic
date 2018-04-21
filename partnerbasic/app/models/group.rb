@@ -17,4 +17,8 @@ class Group < ApplicationRecord
     relationship = GroupToStudent.find_by(user: user_id, group: self)
     relationship.destroy
   end
+
+  def full_name
+    club.club_name + ': ' + group_name
+  end
 end
