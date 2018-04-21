@@ -13,6 +13,7 @@ class ClubsController < ApplicationController
   def show
     @club_members = @club.users
     @club_groups = @club.groups
+    @club_reviews = @club.reviews
   end
 
   # GET /clubs/new

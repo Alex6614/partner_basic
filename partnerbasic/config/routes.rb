@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       end
       member do
         post 'create_application'
+        post 'complete_project'
       end
     end
     member do

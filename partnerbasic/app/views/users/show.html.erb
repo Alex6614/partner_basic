@@ -36,11 +36,13 @@
 
 <% if company? %>
   <% @company_projects.each do |project| %>
-    <tr>
-      <td><%= project.project_name %></td>
-      <td><%= link_to 'Show', user_project_path(@user, project) %></td>
-      <br>
-    </tr>
+    <% if project.complete.nil? || !project.complete %>
+      <tr>
+        <td><%= project.project_name %></td>
+        <td><%= link_to 'Show', user_project_path(@user, project) %></td>
+        <br>
+      </tr>
+    <% end %>
   <% end %>
 <% end %>
 

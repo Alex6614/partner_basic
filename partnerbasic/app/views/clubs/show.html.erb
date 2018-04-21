@@ -75,3 +75,11 @@
 
 <%= link_to 'Edit', edit_club_path(@club) %> |
 <%= link_to 'Back', clubs_path %>
+
+<% @club_reviews.each do |review| %>
+  <tr>
+    <td><%= review.user.name %> </td>
+    <td><%= review.review_text %></td>
+    <br>
+  </tr>
+<% end %>

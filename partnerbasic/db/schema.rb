@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180419052828) do
+ActiveRecord::Schema.define(version: 20180421174442) do
 
   create_table "applications", force: :cascade do |t|
     t.text "text"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20180419052828) do
     t.integer "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "complete"
     t.index ["group_id"], name: "index_projects_on_group_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end

@@ -64,7 +64,7 @@ class UsersController < ApplicationController
   end
 
   def create_project
-    @project = Project.new(user: @user, project_name: params['project_name'])
+    @project = Project.new(user: @user, project_name: params['project_name'], complete: false)
     @project.save
     redirect_to @user
   end

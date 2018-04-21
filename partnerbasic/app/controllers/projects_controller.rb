@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_user
-  before_action :set_project, only: [:show, :edit, :update, :destroy, :create_application]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :create_application, :complete_project]
   helper_method :company?, :owner?, :taken?
 
   # GET /projects
@@ -69,6 +69,13 @@ class ProjectsController < ApplicationController
     @application = Application.new(text: params['application_text'], group: Group.find(params['selected_group']), project: @project)
     @application.save
     redirect_to user_project_path(@user, @project)
+  end
+
+  def complete_project
+    @review = Review.new(review_text: params['review_text'], club: @project.group.club, user: @user)
+    @review.save
+    @project.update_attributes(complete: true)
+    redirect_to @user
   end
 
   private
