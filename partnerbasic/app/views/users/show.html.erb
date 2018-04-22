@@ -5,7 +5,6 @@
     <p><%= @user.description %></p>
   <% if owner? %>
     <%= link_to 'Edit', edit_user_path(@user), class: 'btn-info btn', :style => 'color: white' %>
-    <%= link_to 'Delete', @user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-danger btn', :style => 'color: white' %>
   <% end %>
   </div>
 </div>

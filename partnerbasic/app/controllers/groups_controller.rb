@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
   before_action :set_club
   before_action :set_group, only: [:show, :edit, :update, :destroy, :add_group_member, :remove_group_member]
-  helper_method :member?
+  helper_method :member?, :admin?
 
   # GET /groups
   # GET /groups.json
@@ -75,6 +75,11 @@ class GroupsController < ApplicationController
   end
 
   private
+    def admin?
+      return false unless StudentToClub.exists?(user: current_user, club: @club)
+      student_to_club = StudentToClub.find_by(user: current_user, club: @club)
+      student_to_club.is_admin
+    end
 
     def member?
       GroupToStudent.exists?(user: current_user, group: @group)

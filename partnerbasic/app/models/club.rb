@@ -1,8 +1,8 @@
 class Club < ApplicationRecord
-  has_many :reviews
-  has_many :student_to_clubs
+  has_many :reviews, dependent: :destroy
+  has_many :student_to_clubs, dependent: :destroy
   has_many :users, through: :student_to_clubs
-  has_many :groups
+  has_many :groups, dependent: :destroy
 
   validates :club_name, uniqueness: { scope: :university_name }
 

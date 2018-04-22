@@ -13,6 +13,16 @@
   </div>
 </div>
 
+<div class="row container">
+  <% if !member? && student? %>
+  <%= link_to 'Join Club', add_club_member_club_path, method: :post, class: 'btn-info btn', :style => 'color: white' %>
+  <% end %>
+
+  <% if member? && student? %>
+  <%= link_to 'Leave Club', remove_club_member_club_path, method: :post, class: 'btn-warning btn', :style => 'color: white' %>
+  <% end %>
+  <%= link_to 'Back', clubs_path,  class: 'btn-info btn', :style => 'color: white' %>
+</div>
 <% if !@club_members.empty? %>
   <h2> Members </h2>
 <% end %>
@@ -27,42 +37,36 @@
 <% end %>
 
 <br>
-<% if !member? && student? %>
-<%= link_to 'Join Club', add_club_member_club_path, method: :post %>
-<% end %>
 
-<% if member? && student? %>
-<%= link_to 'Leave Club', remove_club_member_club_path, method: :post %>
+<% if !@club_groups.empty? %>
+  <h2> Groups </h2>
 <% end %>
-<br>
-
 <% @club_groups.each do |group| %>
   <tr>
-    <td><%= group.group_name %></td>
-    <td><%= link_to 'Show', club_group_path(@club, group) %></td>
+    <td><%= link_to "#{group.group_name}", club_group_path(@club, group), class: 'btn-link btn' %></td>
     <br>
   </tr>
 <% end %>
 
 <br>
 
-<%= form_with(url: create_group_club_path, local:true) do |form|%>
-  <div class="field">
-    <%= form.label :group_name%>
-    <%= form.text_field :group_name%>
-  </div>
-  <div class="actions">
-    <%= form.submit 'Create', disabled: false%>
-  </div>
-<%end%>
-
-<%= link_to 'Edit', edit_club_path(@club) %> |
-<%= link_to 'Back', clubs_path %>
+<% if admin? %>
+  <%= form_with(url: create_group_club_path, local:true) do |form|%>
+    <div class="field">
+      <%= form.label :group_name%>
+      <%= form.text_field :group_name%>
+    </div>
+    <div class="actions">
+      <%= form.submit 'Create', disabled: false%>
+    </div>
+  <%end%>
+<% end %>
 
 <% @club_reviews.each do |review| %>
-  <tr>
-    <td><%= review.user.name %> </td>
-    <td><%= review.review_text %></td>
-    <br>
-  </tr>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"> <%= review.user.name %> </h5>
+      <p class="card-text"><%= review.review_text %></p>
+    </div>
+  </div>
 <% end %>

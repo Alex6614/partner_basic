@@ -14,15 +14,17 @@
   </tr>
 <% end %>
 
-<br>
+<div class="container">
 <% if !member? && student? %>
-<%= link_to 'Join Group', add_group_member_club_group_path(group_id: @group), method: :post %>
+<%= link_to 'Join Group', add_group_member_club_group_path(group_id: @group), method: :post, class: 'btn-link btn' %>
 <% end %>
 
 <% if member? && student? %>
-<%= link_to 'Leave Group', remove_group_member_club_group_path(group_id: @group), method: :post %>
+<%= link_to 'Leave Group', remove_group_member_club_group_path(group_id: @group), method: :post, class: 'btn-link btn' %>
 <% end %>
-<br>
+</div>
 
-<%= link_to 'Edit', edit_club_group_path(@club) %> |
-<%= link_to 'Back', @club %>
+<% if admin? %>
+<%= link_to 'Edit', edit_club_group_path(@club), class: 'btn-info btn', :style => 'color: white' %>
+<% end %>
+<%= link_to 'Back', @club, class: 'btn-warning btn', :style => 'color: white' %>
