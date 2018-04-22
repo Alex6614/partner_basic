@@ -12,6 +12,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @company_projects = @user.projects
+    @user_clubs = @user.clubs
   end
 
   # GET /users/new
@@ -56,10 +57,18 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
+    notice = ''
+    if in_clubs?
+      notice = "Can't delete if you are still part of clubs"
+      respond_to do |format|
+        format.html { redirect_to @user, notice: notice }
+        format.json { head :no_content }
+      end
+    else
+      notice = ''
+      @user.destroy
+      reset_session
+      redirect_to root_path
     end
   end
 
@@ -71,7 +80,9 @@ class UsersController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-
+    def in_clubs?
+      StudentToClub.exists?(user: current_user)
+    end
     def company?
       !@user.is_student
     end

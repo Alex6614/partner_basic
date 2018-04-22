@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       resources :applications do
         member do
           post 'accept_application'
+          post 'reject_application'
         end
       end
       member do
@@ -38,6 +39,8 @@ Rails.application.routes.draw do
       post 'add_club_member'
       post 'remove_club_member'
       post 'create_group'
+      post 'make_admin'
+      post 'delete_admin'
     end
   end
 

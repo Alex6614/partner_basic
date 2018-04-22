@@ -4,7 +4,7 @@ class Club < ApplicationRecord
   has_many :users, through: :student_to_clubs
   has_many :groups, dependent: :destroy
 
-  validates :club_name, uniqueness: { scope: :university_name }
+  validates :club_name, uniqueness: { scope: :university_name }, allow_blank: false, presence: true
 
   def add_member(user_id, is_admin)
     StudentToClub.create(club: self, user: user_id, is_admin: is_admin)

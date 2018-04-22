@@ -66,8 +66,10 @@ class ProjectsController < ApplicationController
   end
 
   def create_application
-    @application = Application.new(text: params['application_text'], group: Group.find(params['selected_group']), project: @project)
-    @application.save
+    unless params['selected_group'].empty?
+      @application = Application.new(text: params['application_text'], group: Group.find(params['selected_group']), project: @project)
+      @application.save
+    end
     redirect_to user_project_path(@user, @project)
   end
 

@@ -5,25 +5,52 @@
   <%= @group.group_name %>
 </p>
 
-
-<% @group_members.each do |member| %>
-  <tr>
-    <td><%= member.name %></td>
-    <td><%= link_to 'Show', member %></td>
-    <br>
-  </tr>
-<% end %>
-
 <div class="container">
-<% if !member? && student? %>
-<%= link_to 'Join Group', add_group_member_club_group_path(group_id: @group), method: :post, class: 'btn-link btn' %>
-<% end %>
-
-<% if member? && student? %>
-<%= link_to 'Leave Group', remove_group_member_club_group_path(group_id: @group), method: :post, class: 'btn-link btn' %>
-<% end %>
+    <% if !@group_members.empty? %>
+      <h3> Group Members </h3>
+    <% end %>
+    <% @group_members.each do |member| %>
+      <tr>
+        <%= link_to "#{member.name}", member, class: 'btn-link btn'%>
+        <br>
+      </tr>
+    <% end %>
 </div>
 
+<div class="container">
+    <% if !groupmember? && student? && clubmember? %>
+    <%= link_to 'Join Group', add_group_member_club_group_path(group_id: @group), method: :post, class: 'btn-link btn' %>
+    <% end %>
+
+    <% if groupmember? && student? %>
+    <%= link_to 'Leave Group', remove_group_member_club_group_path(group_id: @group), method: :post, class: 'btn-link btn' %>
+    <% end %>
+</div>
+<% if groupmember? && student? %>
+  <div class="container">
+      <% if !@unfinished_projects.empty? %>
+        <h3> Projects under way </h3>
+      <% end %>
+      <% @unfinished_projects.each do |unfinished_project| %>
+          <div class="row container">
+            <%= "#{unfinished_project.user.name}'s #{unfinished_project.project_name} " %>
+            <br>
+          </div>
+      <% end %>
+   </div>
+    <div class="container">
+      <% if !@pending_applications.empty? %>
+        <h3> Pending Applications </h3>
+      <% end %>
+      <% @pending_applications.each do |pending_application| %>
+          <div class="row container">
+            <%= "#{pending_application.project.user.name}'s #{pending_application.project.project_name} " %>
+            <%= link_to "Delete", user_project_application_path(pending_application.project.user, pending_application.project, pending_application), method: :delete, data: { confirm: 'Are you sure?' } %>
+          <br>
+          </div>
+      <% end %>
+    </div>
+<% end %>
 <% if admin? %>
 <%= link_to 'Edit', edit_club_group_path(@club), class: 'btn-info btn', :style => 'color: white' %>
 <% end %>

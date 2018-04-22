@@ -1,6 +1,6 @@
 class ClubsController < ApplicationController
-  before_action :set_club, only: [:show, :edit, :update, :destroy, :add_club_member, :remove_club_member, :create_group]
-  helper_method :admin?, :adminv2?, :member?
+  before_action :set_club, only: [:show, :edit, :update, :destroy, :add_club_member, :remove_club_member, :create_group, :make_admin, :delete_admin]
+  helper_method :admin?, :adminv2?, :member?, :only_admin?
 
   # GET /clubs
   # GET /clubs.json
@@ -72,8 +72,28 @@ class ClubsController < ApplicationController
   end
 
   def remove_club_member
-    @club.remove_member(current_user)
-    redirect_to @club
+    if only_admin? && admin?
+      if applications?
+        respond_to do |format|
+          format.html { redirect_to @club, notice: 'Club still has pending applications' }
+          format.json { head :no_content }
+        end
+      elsif projects?
+        respond_to do |format|
+          format.html { redirect_to @club, notice: 'Club still has unfinished projects' }
+          format.json { head :no_content }
+        end
+      else
+        @club.destroy
+        respond_to do |format|
+          format.html { redirect_to clubs_url, notice: 'Club was successfully destroyed.' }
+          format.json { head :no_content }
+        end
+      end
+    else
+      @club.remove_member(current_user)
+      redirect_to @club
+    end
   end
 
   def create_group
@@ -82,7 +102,30 @@ class ClubsController < ApplicationController
     redirect_to @club
   end
 
+  def make_admin
+    return unless StudentToClub.exists?(user: params['member'], club: @club)
+    student_to_club = StudentToClub.find_by(user: params['member'], club: @club)
+    student_to_club.update_attributes(is_admin: true)
+    redirect_to @club
+  end
+
+  def delete_admin
+    return unless StudentToClub.exists?(user: params['member'], club: @club)
+    student_to_club = StudentToClub.find_by(user: params['member'], club: @club)
+    student_to_club.update_attributes(is_admin: false)
+    redirect_to @club
+  end
+
   private
+    def projects?
+      @club.groups.any? { |group| Project.exists?(group: group, complete: false) }
+    end
+    def applications?
+      @club.groups.any? { |group| Application.exists?(group: group) }
+    end
+    def only_admin?
+      StudentToClub.select { |m| m.is_admin && m.club == @club }.size == 1 && admin?
+    end
 
     def admin?
       return false unless StudentToClub.exists?(user: current_user, club: @club)

@@ -3,7 +3,11 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?, :student?, :current_user
 
   def logged_in?
-    session[:user_id]
+    if !User.exists?(id: session[:user_id])
+      false
+    else
+      session[:user_id]
+    end
   end
 
   def student?
@@ -11,7 +15,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if logged_in?
+    if !User.exists?(id: session[:user_id])
+      reset_session
+    elsif logged_in?
+      @current_user ||= User.find(session[:user_id])
+    end
   end
 
   def authenticate_user

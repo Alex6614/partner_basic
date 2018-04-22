@@ -1,6 +1,6 @@
 class Group < ApplicationRecord
   belongs_to :club
-  has_many :group_to_students
+  has_many :group_to_students, dependent: :destroy
   has_many :users, through: :group_to_students
   has_many :applications, dependent: :destroy
   has_many :projects

@@ -48,6 +48,7 @@
               <br>
               <%= link_to 'Show', club_path(application.group.club), class: 'btn-info btn', :style => 'color: white' %>
               <%= link_to 'Accept', accept_application_user_project_application_path(@user, @project, application), method: :post, class: 'btn-success btn', :style => 'color: white' %>
+              <%= link_to 'Reject', reject_application_user_project_application_path(@user, @project, application), method: :post, class: 'btn-danger btn', :style => 'color: white' %>
             </div>
           </div>
         <% end %>

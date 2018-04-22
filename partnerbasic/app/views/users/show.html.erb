@@ -5,11 +5,17 @@
     <p><%= @user.description %></p>
   <% if owner? %>
     <%= link_to 'Edit', edit_user_path(@user), class: 'btn-info btn', :style => 'color: white' %>
+    <%= link_to 'Delete', @user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-danger btn', :style => 'color: white' %>
   <% end %>
   </div>
 </div>
 
-<br>
+<% if !company? && !@user_clubs.empty? %>
+  <h2> Clubs </h2>
+  <% @user_clubs.each do |club| %>
+    <%= link_to "#{club.club_name}".html_safe, club, class: 'btn-link btn'%>
+  <% end %>
+<% end %>
 
 <% if company? %>
   <div class="container">

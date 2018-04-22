@@ -8,7 +8,6 @@
     <p><%= @club.description %></p>
   <% if admin? %>
     <%= link_to 'Edit', edit_club_path(@club), class: 'btn-info btn', :style => 'color: white' %>
-    <%= link_to 'Delete', @club, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-danger btn', :style => 'color: white' %>
   <% end %>
   </div>
 </div>
@@ -19,7 +18,7 @@
   <% end %>
 
   <% if member? && student? %>
-  <%= link_to 'Leave Club', remove_club_member_club_path, method: :post, class: 'btn-warning btn', :style => 'color: white' %>
+  <%= link_to 'Leave Club', remove_club_member_club_path, method: :post, data: { confirm: 'If you are the last admin, leaving will delete the club!' }, class: 'btn-warning btn', :style => 'color: white' %>
   <% end %>
   <%= link_to 'Back', clubs_path,  class: 'btn-info btn', :style => 'color: white' %>
 </div>
@@ -32,6 +31,15 @@
       &#9813;
     <% end %>
     <td><%= link_to "#{member.name}".html_safe, member, class: 'btn-link btn'%></td>
+    <% if admin? %>
+      <% if !adminv2?(member) %>
+        <%= link_to "Make Admin", make_admin_club_path(@club, :member => member), method: :post %>
+      <% else %>
+        <% if !only_admin? %>
+          <%= link_to "Delete Admin", delete_admin_club_path(@club, :member => member), method: :post %>
+        <% end %>
+      <% end %>
+    <% end %>
     <br>
   </tr>
 <% end %>

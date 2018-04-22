@@ -1,7 +1,7 @@
 class ApplicationsController < ApplicationController
   before_action :set_user
   before_action :set_project
-  before_action :set_application, only: [:show, :edit, :update, :destroy, :accept_application]
+  before_action :set_application, only: [:show, :edit, :update, :destroy, :accept_application, :reject_application]
 
   # GET /applications
   # GET /applications.json
@@ -58,13 +58,19 @@ class ApplicationsController < ApplicationController
   def destroy
     @application.destroy
     respond_to do |format|
-      format.html { redirect_to applications_url, notice: 'Application was successfully destroyed.' }
+      format.html { redirect_to root_path, notice: 'Application was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   def accept_application
     @project.update_attributes(group: @application.group)
+    @application.destroy
+    redirect_to user_project_path(@user, @project)
+  end
+
+  def reject_application
+    @application.destroy
     redirect_to user_project_path(@user, @project)
   end
 

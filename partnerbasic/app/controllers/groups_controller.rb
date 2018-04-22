@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
   before_action :set_club
   before_action :set_group, only: [:show, :edit, :update, :destroy, :add_group_member, :remove_group_member]
-  helper_method :member?, :admin?
+  helper_method :groupmember?, :admin?, :clubmember?
 
   # GET /groups
   # GET /groups.json
@@ -13,6 +13,8 @@ class GroupsController < ApplicationController
   # GET /groups/1.json
   def show
     @group_members = @group.users
+    @pending_applications = @group.applications
+    @unfinished_projects = @group.projects.where(complete: false)
   end
 
   # GET /groups/new
@@ -81,8 +83,11 @@ class GroupsController < ApplicationController
       student_to_club.is_admin
     end
 
-    def member?
+    def groupmember?
       GroupToStudent.exists?(user: current_user, group: @group)
+    end
+    def clubmember?
+      StudentToClub.exists?(user: current_user, club: @club)
     end
     def set_club
       @club = Club.find(params[:club_id])
