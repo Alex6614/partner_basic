@@ -77,28 +77,32 @@ class GroupsController < ApplicationController
   end
 
   private
-    def admin?
-      return false unless StudentToClub.exists?(user: current_user, club: @club)
-      student_to_club = StudentToClub.find_by(user: current_user, club: @club)
-      student_to_club.is_admin
-    end
 
-    def groupmember?
-      GroupToStudent.exists?(user: current_user, group: @group)
-    end
-    def clubmember?
-      StudentToClub.exists?(user: current_user, club: @club)
-    end
-    def set_club
-      @club = Club.find(params[:club_id])
-    end
-    # Use callbacks to share common setup or constraints between actions.
-    def set_group
-      @group = Group.find(params[:id])
-    end
+  def admin?
+    return false unless StudentToClub.exists?(user: current_user, club: @club)
+    student_to_club = StudentToClub.find_by(user: current_user, club: @club)
+    student_to_club.is_admin
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def group_params
-      params.require(:group).permit(:club_id, :group_name)
-    end
+  def groupmember?
+    GroupToStudent.exists?(user: current_user, group: @group)
+  end
+
+  def clubmember?
+    StudentToClub.exists?(user: current_user, club: @club)
+  end
+
+  def set_club
+    @club = Club.find(params[:club_id])
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_group
+    @group = Group.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def group_params
+    params.require(:group).permit(:club_id, :group_name)
+  end
 end

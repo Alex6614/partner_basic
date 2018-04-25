@@ -26,4 +26,22 @@ class ApplicationController < ActionController::Base
   def authenticate_user
     redirect_to root_path unless logged_in?
   end
+
+  def change_admin_status(user, club, status)
+    return unless StudentToClub.exists?(user: user, club: club)
+    student_to_club = StudentToClub.find_by(user: user, club: club)
+    student_to_club.update_attributes(is_admin: status)
+    redirect_to club
+  end
+
+  def check_admin_status(user, club)
+    return false unless StudentToClub.exists?(user: user, club: club)
+    student_to_club = StudentToClub.find_by(user: user, club: club)
+    student_to_club.is_admin
+  end
+
+  def remove_current_user(user, club)
+    club.remove_member(user)
+    redirect_to club
+  end
 end
