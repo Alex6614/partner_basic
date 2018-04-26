@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @user_groups = if current_user.nil? then [] else current_user.groups end
+    @user_groups = current_user.nil? ? [] : current_user.groups
     @project_applications = @project.applications
   end
 
@@ -81,28 +81,30 @@ class ProjectsController < ApplicationController
   end
 
   private
-    def company?
-      !@user.is_student
-    end
 
-    def owner?
-      @user == current_user
-    end
+  def company?
+    !@user.is_student
+  end
 
-    def set_user
-      @user = User.find(params[:user_id])
-    end
-    # Use callbacks to share common setup or constraints between actions.
-    def set_project
-      @project = Project.find(params[:id])
-    end
+  def owner?
+    @user == current_user
+  end
 
-    def taken?
-      !@project.group_id.nil?
-    end
+  def set_user
+    @user = User.find(params[:user_id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def project_params
-      params.require(:project).permit(:user_id, :project_name, :description, :group_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_project
+    @project = Project.find(params[:id])
+  end
+
+  def taken?
+    !@project.group_id.nil?
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def project_params
+    params.require(:project).permit(:user_id, :project_name, :description, :group_id)
+  end
 end

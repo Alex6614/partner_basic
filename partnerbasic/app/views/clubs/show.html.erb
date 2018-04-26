@@ -22,10 +22,10 @@
   <% end %>
   <%= link_to 'Back', clubs_path,  class: 'btn-info btn', :style => 'color: white' %>
 </div>
-<% if !@club_members.empty? %>
+<% if !@club.users.empty? %>
   <h2> Members </h2>
 <% end %>
-<% @club_members.each do |member| %>
+<% @club.users.each do |member| %>
   <tr>
     <% if adminv2?(member) %>
       &#9813;
@@ -46,10 +46,10 @@
 
 <br>
 
-<% if !@club_groups.empty? %>
+<% if !@club.groups.empty? %>
   <h2> Groups </h2>
 <% end %>
-<% @club_groups.each do |group| %>
+<% @club.groups.each do |group| %>
   <tr>
     <td><%= link_to "#{group.group_name}", club_group_path(@club, group), class: 'btn-link btn' %></td>
     <br>
@@ -70,10 +70,14 @@
   <%end%>
 <% end %>
 
-<% @club_reviews.each do |review| %>
+<% @club.reviews.each do |review| %>
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title"> <%= review.user.name %> </h5>
+      <% if review.user.nil? %>
+        <h5 class="card-title"> Employer deleted </h5>
+      <% else %>
+        <h5 class="card-title"> <%= review.user.name %> </h5>
+      <% end %>
       <p class="card-text"><%= review.review_text %></p>
     </div>
   </div>

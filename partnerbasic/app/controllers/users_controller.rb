@@ -57,15 +57,12 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    notice = ''
     if in_clubs?
-      notice = "Can't delete if you are still part of clubs"
       respond_to do |format|
-        format.html { redirect_to @user, notice: notice }
+        format.html { redirect_to @user, notice: "Can't delete if you are still part of clubs" }
         format.json { head :no_content }
       end
     else
-      notice = ''
       @user.destroy
       reset_session
       redirect_to root_path
@@ -79,24 +76,26 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def in_clubs?
-      StudentToClub.exists?(user: current_user)
-    end
-    def company?
-      !@user.is_student
-    end
 
-    def owner?
-      @user == current_user
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def in_clubs?
+    StudentToClub.exists?(user: current_user)
+  end
 
-    def set_user
-      @user = User.find(params[:id])
-    end
+  def company?
+    !@user.is_student
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:email, :name, :password_hash, :photo_link, :description, :is_student)
-    end
+  def owner?
+    @user == current_user
+  end
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:email, :name, :password_hash, :photo_link, :description, :is_student)
+  end
 end
